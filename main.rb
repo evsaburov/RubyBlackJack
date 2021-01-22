@@ -1,9 +1,10 @@
-require_relative 'menu'
+require_relative ''
 
 class Game
 
   def initialize
-    super
+    @player =
+    @diller
   end
 
   def start_game
