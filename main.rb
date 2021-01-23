@@ -3,27 +3,42 @@ require_relative 'round'
 
 class Game
 
-  SATRT_PLAYER_BALANCE = 100
-  SATRT_DILLER_BALANCE = 100
+  START_PLAYER_BALANCE = 100
+  START_DILLER_BALANCE = 100
+
+  attr_reader :player_name, :player_balance, :round
 
   def initialize
-    @player_balance = SATRT_PLAYER_BALANCE
+    @player_balance = START_PLAYER_BALANCE
     @player_name = option.name_is?
   end
 
-  def start
+  def start_game
+    while player_balance.zero?
 
-    while SATRT_PLAYER_BALANCE.positive?
+      place_bet
+      @round = Round.new
+      until round.end?
 
-    end
 
+
+        more_game = option.more_game?
+        break unless more_game
+      end
 
   end
 
   puts "Goodbay #{@player_name}, Balance #{@player_balance}"
+
+  def place_bet
+    # code here
+  end
+
+
+
 end
 
 game = Game.new
-game.start
+game.start_game
 
 
