@@ -6,6 +6,7 @@ class Game
   START_PLAYER_BALANCE = 100
   START_DILLER_BALANCE = 100
 
+
   attr_reader :player_name, :player_balance, :round
 
   def initialize
@@ -32,12 +33,14 @@ class Game
       more_game = option.more_game?
       break unless more_game
 
-  end
+    end
 
-  puts "Goodbay #{@player_name}, Balance #{@player_balance}"
+    puts "RESULT GAME - #{@player_name}, Balance #{@player_balance}"
 
-  def place_bet
-    @player_balance -= 10
+    def place_bet
+      @player_balance -= 10
+    end
+
   end
 
   def update_balance

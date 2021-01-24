@@ -7,8 +7,19 @@ module Option
   def more_game?
     puts 'Запустить новую игру?(y/n)'
     more = gets.chomp.to_s
-    result = more == 'y' ? true : false
+    more == 'y'
   end
 
-  
+  def player_respond
+    puts 'Введите y/n, чтобы взять карту, или закончить ход.'
+    resp = gets.chomp.to_s
+    resp == 'y'
+  end
+
+  def info_round
+    # code here
+  end
+
+
+
 end
