@@ -16,8 +16,13 @@ module Option
     resp == 'y'
   end
 
-  def info_round
-    # code here
+  def result_round(round)
+    puts "Результат игрока: карты - #{round.player_cards}. Очки #{round.player_score}"
+    puts "Результат диллера: карты - #{round.dealer_cards}. Очки #{round.dealer_cards}"
+
+    if round.finished?
+    end
+
   end
 
 

@@ -6,14 +6,23 @@ class Card
     @suit = suit
   end
 
-  def output_card
-    puts "#{self.rank} of #{self.suit}"
+  def picture?
+    %[J Q K].include? rank
+  end
+
+  def ace?
+    ['A'].include? rank
+  end
+
+  def cost(rank)
+    return 10 if picture?
+    return 11 if ace?
+    rank.to_i
   end
 
 end
 
 class Deck
-
 
   def initialize
 
@@ -27,20 +36,11 @@ class Deck
         @deck << card
       end
     end
+    @deck.shuffle!
   end
 
-
-  def output_deck
-
-  end
-
-  def shuffle
-
-  end
-
-  def deal
-
+  def one_card
+    @deck.empty? ? nil : @deck.shift
   end
 
 end
-
