@@ -1,5 +1,6 @@
 require_relative 'round'
 require_relative 'card'
+
 class Round
 
   def initialize
@@ -27,42 +28,40 @@ class Round
   def calculate_dealer_result
     @dialer_cards.each { |card| @dialer_score += card.cost}
   end
+  
+  def player_take_card
+  end
 
   def dealer_turn
     while dealer_score <= 17
       calculate_dealer_result
       @dealer_cards << deck.one_card
     end
-    check_result_after_dealer_turn
+    check_after_dealer_turn
   end
 
-  def player_take_card
-
-  end
 
   def player_turn(answer)
     return if finished?
-    case answer
-    when :player_take_card
-      player_get_card
-    when :dealer_turn
-      dialer_turn
-    end
-    # if answer == :player_take_card
-    #   player_get_card
-    #  elsif nswer == :dealer_turn
-    #   dialer_turn
-    # end
+    answer ? player_get_card : dealer_turn
   end
 
   def finished?
     @finished
   end
 
-  def check_result_after_player_turn
+  def check_after_player_turn
+    if @player_turn > 21
+      @result = :player_wins
+      @finished = true
+    end
   end
 
-  def check_result_after_dealer_turn
+  def check_after_dealer_turn
+    if @player_turn > 21
+      @result = :dealer_wins
+      @finished = true
+    end
   end
 
 end
