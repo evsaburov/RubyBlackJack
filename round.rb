@@ -19,6 +19,7 @@ class Round
       @dialer_cards << @cards.one_card
     end
     calculate_player_result
+    # calculate_dealer_result
   end
 
   def calculate_player_result
@@ -26,10 +27,13 @@ class Round
   end
 
   def calculate_dealer_result
-    @dialer_cards.each { |card| @dialer_score += card.cost}
+    @dealer_cards.each { |card| @dialer_score += card.cost}
   end
   
-  def player_take_card
+  def player_get_card
+    @player_cards << @cards.one_card
+    calculate_player_result
+    check_after_player_turn
   end
 
   def dealer_turn
@@ -37,7 +41,7 @@ class Round
       calculate_dealer_result
       @dealer_cards << deck.one_card
     end
-    check_after_dealer_turn
+    check_after_dealer_turn 
   end
 
 

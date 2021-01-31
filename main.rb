@@ -23,7 +23,7 @@ class Game
 
       @round = Round.new
 
-      until round.end?
+      until round.finished?
         option.info_round(round)
         answer = option.player_respond
         round.player_turn(answer)
@@ -49,9 +49,9 @@ class Game
   end
 
   def update_balance
-    if round.result == 'win'
+    if round.result == :win
       @player_balance += 2 * BET
-    elsif round.result == 'lose'
+    elsif round.result == :lose
       @player_balance -= BET
     end
   end
