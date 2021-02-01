@@ -1,5 +1,6 @@
 module Option
-  def name_is?
+
+  def self.name_is?
     puts 'Введите свое имя:'
     name = gets.chomp.to_s
   end
@@ -17,7 +18,7 @@ module Option
   end
 
   def result_round(round)
-    puts "Результат игрока: карты - #{round.player_cards}. Очки #{round.player_score}"
+    puts "Результат игрока:  карты - #{round.player_cards}. Очки #{round.player_score}"
     puts "Результат диллера: карты - #{round.dealer_cards}. Очки #{round.dealer_cards}"
 
     if round.finished?

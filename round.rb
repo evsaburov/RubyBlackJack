@@ -3,6 +3,8 @@ require_relative 'card'
 
 class Round
 
+  attr_reader :result
+
   def initialize
     @cards = Deck.new
     @player_cards = []
@@ -10,24 +12,26 @@ class Round
     @dealer_cards = []
     @dealer_score = 0
     @finished = false
+    @result
     start_turn
   end
-
+  
   def start_turn
     2.times do
       @player_cards << @cards.one_card
-      @dialer_cards << @cards.one_card
+      @dealer_cards << @cards.one_card
     end
+    binding.pry
     calculate_player_result
-    # calculate_dealer_result
+    calculate_dealer_result
   end
 
   def calculate_player_result
-    @player_cards.each { |card| @player_score += card.cost}
+    @player_cards.each { |card| @player_score += card.cost(card.rank)}
   end
 
   def calculate_dealer_result
-    @dealer_cards.each { |card| @dialer_score += card.cost}
+    @dealer_cards.each { |card| @dialer_score += card.cost(card.rank)}
   end
   
   def player_get_card

@@ -1,34 +1,35 @@
 require_relative 'option'
 require_relative 'round'
+require 'pry'
 
 class Game
 
   SATRT_BALANCE = 100
   BET = 10
 
-
   attr_reader :player_name, :player_balance, :round
 
   def initialize
     @player_balance = SATRT_BALANCE
-    @dialer_balance = SATRT_BALANCE
-    @player_name = option.name_is?
+    @dealer_balance = SATRT_BALANCE
+    # @player_name = Option.name_is?
+    @player_name = 'test'
   end
 
   def start_game
 
-    while player_balance.zero?
-
+    while player_balance > BET
+      
       place_bet
-
       @round = Round.new
-
+      
       until round.finished?
         option.info_round(round)
         answer = option.player_respond
         round.player_turn(answer)
       end
-
+      
+      binding.pry
       update_balance
 
       option.result_round(round)
@@ -38,14 +39,15 @@ class Game
 
     end
 
-    puts "RESULT GAME - #{@player_name}, Balance #{@player_balance}"
+    puts "GAME #{}. #{@player_name}, balance #{@player_balance}"
+    
+  end
 
-    private
-
-    def place_bet
-      @player_balance -= BET
-    end
-
+  private
+  
+  def place_bet
+    @player_balance -= BET
+    @dealer_balance -= BET
   end
 
   def update_balance
@@ -53,10 +55,10 @@ class Game
       @player_balance += 2 * BET
     elsif round.result == :lose
       @player_balance -= BET
+    elsif round.result == :drow
+      @player_balance += BET
     end
   end
-
-
 
 end
 
