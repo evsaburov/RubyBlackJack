@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require_relative 'option'
 require_relative 'round'
 require 'pry'
 
+# class game black jack
 class Game
   SATRT_BALANCE = 100
   BET = 10
@@ -14,30 +17,25 @@ class Game
     @player_name = Option.name_is?
   end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def start_game
     Option.start_game(@player_name)
-
-    while player_balance > 0
-
+    while player_balance.positive?
       place_bet
       @round = Round.new
-
       until round.finished?
         Option.info_round(round)
         answer = Option.player_respond
         round.player_turn(answer)
       end
-
       update_balance
       Option.result_round(round)
-
       more_game = Option.more_game?
       break unless more_game
-
     end
-
     Option.end_game(@player_name, @player_balance)
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   private
 

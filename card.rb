@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# One card class
 class Card
   attr_reader :rank, :suit
   attr_accessor :cost
@@ -24,6 +27,7 @@ class Card
   end
 end
 
+# Deck cards class
 class Deck
   def initialize
     @deck = []

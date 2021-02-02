@@ -1,4 +1,6 @@
-# Модуль вспомогательных функций для
+# frozen_string_literal: true
+
+# Helper function module
 module Option
   def self.name_is?
     puts 'Введите свое имя:'
@@ -11,6 +13,7 @@ module Option
     more == 'y'
   end
 
+  # rubocop:disable Metrics/MethodLength,
   def self.player_respond
     puts 'Введите y/n/q. Взять карту/Пропусть ход/Вскрыть карты.'
     resp = gets.chomp.to_s
@@ -26,25 +29,28 @@ module Option
   rescue RuntimeError
     retry
   end
+  # rubocop:enable Metrics/MethodLength
 
   def self.info_round(round)
     puts "Результат игрока:  карты - #{round.show_player_cards} Очки #{round.player_score}"
     puts "Результат диллера: карты - #{round.show_dealer_cards} Очки #{round.dealer_score}" if round.finished?
   end
 
+  # rubocop:disable Metrics/MethodLength
   def self.result_round(round)
     puts "\nРаунд закончен!\n"
     info_round(round)
-    result = case round.result
-             when :player_wins
-               'Игрок выииграл!'
-             when :dealer_wins
-               'Диллер выиграл!'
-             when :draw
-               'Ничья!'
-             end
+    result =  case round.result
+              when :player_wins
+                'Игрок выииграл!'
+              when :dealer_wins
+                'Диллер выиграл!'
+              when :draw
+                'Ничья!'
+              end
     puts "\nРезультат раунда - #{result}"
   end
+  # rubocop:enable Metrics/MethodLength
 
   def self.start_game(user)
     puts "#{user.capitalize} игра началась!"

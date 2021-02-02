@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 require_relative 'round'
 require_relative 'card'
 
+# Round class
+# rubocop:disable Metrics/ClassLength
 class Round
   attr_reader :result, :player_cards, :dealer_cards, :player_score, :dealer_score
 
@@ -11,7 +15,6 @@ class Round
     @dealer_cards = []
     @dealer_score = 0
     @finished = false
-    @result
     start_turn
   end
 
@@ -29,7 +32,7 @@ class Round
     @player_cards.each do |card|
       if card.rank == 'A'
         summ = 0
-        @player_cards.each { |card| summ += card.cost }
+        @player_cards.each { |c| summ += c.cost }
         card.cost = (summ >= 21 ? 1 : 11)
       end
       @player_score += card.cost
@@ -41,7 +44,7 @@ class Round
     @dealer_cards.each do |card|
       if card.rank == 'A'
         summ = 0
-        @dealer_cards.each { |card| summ += card.cost }
+        @dealer_cards.each { |c| summ += c.cost }
         card.cost = (summ >= 21 ? 1 : 11)
       end
       @dealer_score += card.cost
@@ -82,13 +85,11 @@ class Round
   def dealer_turn
     return if finished?
 
-    if @dealer_score >= 17
-      check_after_dealer_turn
-    else
+    if @dealer_score <= 17
       @dealer_cards << @cards.one_card
       calculate_dealer_result
-      check_after_dealer_turn
     end
+    check_after_dealer_turn
     show_after_3_cards
   end
 
@@ -127,13 +128,14 @@ class Round
 
   def show_player_cards
     result = ''
-    @player_cards.each { |card| result += "#{card.suit}#{'%2s' % card.rank}(cast=#{'%02d' % card.cost}) " }
+    @player_cards.each { |card| result += "#{card.suit}#{card.rank}(cast=#{card.cost}) " }
     result.to_s
   end
 
   def show_dealer_cards
     result = ''
-    @dealer_cards.each { |card| result += "#{card.suit}#{'%2s' % card.rank}(cast=#{'%02d' % card.cost}) " }
+    @dealer_cards.each { |card| result += "#{card.suit}#{card.rank}(cast=#{card.cost}) " }
     result.to_s
   end
 end
+# rubocop:enable Metrics/ClassLength
