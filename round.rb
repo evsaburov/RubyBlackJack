@@ -27,25 +27,40 @@ class Round
   
   def calculate_player_result
     @player_score = 0
-    @player_cards.each { |card| @player_score += card.cost }
+    @player_cards.each do |card| 
+      if card.rank == 'A'
+        summ = 0
+        @player_cards.each { |card| summ += card.cost }
+        summ >= 21 ?  card.cost = 1 : card.cost = 11
+      end
+      @player_score += card.cost 
+    end
   end
   
   def calculate_dealer_result
     @dealer_score = 0
-    @dealer_cards.each { |card| @dealer_score += card.cost }
+    @dealer_cards.each do |card| 
+      if card.rank == 'A'
+        summ = 0
+        @dealer_cards.each { |card| summ += card.cost }
+        summ >= 21 ?  card.cost = 1 : card.cost = 11
+      end
+      @dealer_score += card.cost 
+    end
   end
   
   def player_take_card
+    return if @player_cards.length == 3
     @player_cards << @cards.one_card
     calculate_player_result
     check_after_player_turn
   end
   
   def player_turn(answer)
-    puts 'player_turn' 
     return if finished?
     case answer
       when :player_take_card
+        show_after_3_cards
         player_take_card
       when :player_skip_turn
         dealer_turn
@@ -54,31 +69,37 @@ class Round
     end
   end
   
-  def check_after_player_tur
-    puts 'check_after_player_tur' 
-    binding.pry
+  def check_after_player_turn
     if @player_score > 21
-      @result = :player_wins
+      puts 'Больше 21, противник выиграл'
+      @result = :dealer_wins
       @finished = true
     end
+    show_after_3_cards
   end
 
   def dealer_turn
-    puts 'dealer_turn' 
-    #Если очков больше 17, пропустим ход, иначе возмем карту.
+    return if finished?
     if @dealer_score >= 17
       check_after_dealer_turn 
     else
       @dealer_cards << @cards.one_card
       calculate_dealer_result
-      #ход переходит игроку
+      check_after_dealer_turn
+    end
+    show_after_3_cards
+  end
+
+  def show_after_3_cards
+    if @player_cards.length == 3 && @dealer_cards.length == 3
+      show_cards
     end
   end
-  
+
   def check_after_dealer_turn
-    puts 'check_after_dealer_turn' 
     if @dealer_score > 21
-      @result = :dealer_wins
+      puts 'Больше 21, противник выиграл'
+      @result = :player_wins
       @finished = true
     end
     calculate_result_round
@@ -91,25 +112,28 @@ class Round
     elsif delta.negative?
       @result = :dealer_wins
     elsif delta.zero?
-      @result = :drow 
+      @result = :draw 
     end
     @finished = true
+  end
+
+  def show_cards
+    calculate_result_round
   end
 
   def finished?
     @finished
   end
 
-
   def show_player_cards
     result = ''
-    @player_cards.each { |card| result += "#{card.suit}#{"%1s"%card.rank}(cast=#{"%02d"%card.cost}) " }
+    @player_cards.each { |card| result += "#{card.suit}#{"%2s"%card.rank}(cast=#{"%02d"%card.cost}) " }
     return result.to_s
   end
 
   def show_dealer_cards
     result = ''
-    @dealer_cards.each { |card| result += "#{card.suit}#{"%1s"%card.rank}(cast=#{"%02d"%card.cost}) " }
+    @dealer_cards.each { |card| result += "#{card.suit}#{"%2s"%card.rank}(cast=#{"%02d"%card.cost}) " }
     return result.to_s
   end
 

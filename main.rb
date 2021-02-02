@@ -12,13 +12,14 @@ class Game
   def initialize
     @player_balance = SATRT_BALANCE
     @dealer_balance = SATRT_BALANCE
-    # @player_name = Option.name_is?
-    @player_name = 'test'
+    @player_name = Option.name_is?
   end
 
   def start_game
+    
+    Option.start_game(@player_name)
 
-    while player_balance > BET
+    while player_balance > 0
       
       place_bet
       @round = Round.new
@@ -29,18 +30,16 @@ class Game
         round.player_turn(answer)
       end
       
-      binding.pry
       update_balance
-
-      option.result_round(round)
+      Option.result_round(round)
 
       more_game = Option.more_game?
       break unless more_game
 
     end
 
-    puts "GAME #{}. #{@player_name}, balance #{@player_balance}"
-    
+    Option.end_game(@player_name, @player_balance)
+
   end
 
   private
@@ -48,15 +47,17 @@ class Game
   def place_bet
     @player_balance -= BET
     @dealer_balance -= BET
+    Option.greatings(@player_balance, @dealer_balance)
   end
 
   def update_balance
     if round.result == :player_wins
       @player_balance += 2 * BET
     elsif round.result == :dealer_wins
-      @player_balance -= BET
+      @player_balance += 2 * BET
     elsif round.result == :drow
       @player_balance += BET
+      @dealer_balance += BET
     end
   end
 

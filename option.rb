@@ -5,8 +5,8 @@ module Option
     name = gets.chomp.to_s
   end
 
-  def more_game?
-    puts 'Запустить новую игру?(y/n)'
+  def self.more_game?
+    puts 'Запустить новый раунд?(y/n)'
     more = gets.chomp.to_s
     more == 'y'
   end
@@ -28,14 +28,40 @@ module Option
     retry
   end
 
-  # "%05d" % 
-
   def self.info_round(round)
     puts "Результат игрока:  карты - #{round.show_player_cards} Очки #{round.player_score}"
-    puts "Результат диллера: карты - #{round.show_dealer_cards} Очки #{round.dealer_score}"
-
     if round.finished?
+      puts "Результат диллера: карты - #{round.show_dealer_cards} Очки #{round.dealer_score}"
     end
+  end
 
+  def self.result_round(round)
+    puts "\nРаунд закончен!\n"
+    info_round(round)
+    result = case round.result
+              when :player_wins
+                'Игрок выииграл!'
+              when :dealer_wins
+                'Диллер выиграл!'
+              when :draw
+                'Ничья!'
+              end
+    puts "\nРезультат раунда - #{result}"              
+  end
+
+
+  def self.start_game(user)
+    puts "#{user.capitalize} игра началась!"
+  end
+
+  def self.end_game (user, balance)
+    puts "Игра закончена #{user}, ваш баланс #{balance}!"
+  end
+
+  def self.greatings(player_balance, dealer_balance)
+    puts '*'*47
+    puts "* Начало новога раунда. Размещение ставки 10$ *"
+    puts '*'*47
+    puts "Баланс: Игрок #{player_balance}. Диллер #{dealer_balance}\n"
   end
 end
