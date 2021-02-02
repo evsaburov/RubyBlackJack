@@ -3,7 +3,6 @@ require_relative 'round'
 require 'pry'
 
 class Game
-
   SATRT_BALANCE = 100
   BET = 10
 
@@ -16,20 +15,19 @@ class Game
   end
 
   def start_game
-    
     Option.start_game(@player_name)
 
     while player_balance > 0
-      
+
       place_bet
       @round = Round.new
-      
+
       until round.finished?
         Option.info_round(round)
         answer = Option.player_respond
         round.player_turn(answer)
       end
-      
+
       update_balance
       Option.result_round(round)
 
@@ -39,11 +37,10 @@ class Game
     end
 
     Option.end_game(@player_name, @player_balance)
-
   end
 
   private
-  
+
   def place_bet
     @player_balance -= BET
     @dealer_balance -= BET
@@ -60,10 +57,7 @@ class Game
       @dealer_balance += BET
     end
   end
-
 end
 
 game = Game.new
 game.start_game
-
-

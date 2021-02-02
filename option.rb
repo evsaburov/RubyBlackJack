@@ -1,8 +1,8 @@
+# Модуль вспомогательных функций для
 module Option
-
   def self.name_is?
     puts 'Введите свое имя:'
-    name = gets.chomp.to_s
+    gets.chomp.to_s
   end
 
   def self.more_game?
@@ -14,7 +14,6 @@ module Option
   def self.player_respond
     puts 'Введите y/n/q. Взять карту/Пропусть ход/Вскрыть карты.'
     resp = gets.chomp.to_s
-    # resp == 'y'
     if resp == 'y'
       :player_take_card
     elsif resp == 'n'
@@ -22,7 +21,7 @@ module Option
     elsif resp == 'q'
       :show_cards
     else
-      raise "Не удалость обработать ответ, попробуйте еще раз."
+      raise 'Не удалость обработать ответ, попробуйте еще раз.'
     end
   rescue RuntimeError
     retry
@@ -30,38 +29,35 @@ module Option
 
   def self.info_round(round)
     puts "Результат игрока:  карты - #{round.show_player_cards} Очки #{round.player_score}"
-    if round.finished?
-      puts "Результат диллера: карты - #{round.show_dealer_cards} Очки #{round.dealer_score}"
-    end
+    puts "Результат диллера: карты - #{round.show_dealer_cards} Очки #{round.dealer_score}" if round.finished?
   end
 
   def self.result_round(round)
     puts "\nРаунд закончен!\n"
     info_round(round)
     result = case round.result
-              when :player_wins
-                'Игрок выииграл!'
-              when :dealer_wins
-                'Диллер выиграл!'
-              when :draw
-                'Ничья!'
-              end
-    puts "\nРезультат раунда - #{result}"              
+             when :player_wins
+               'Игрок выииграл!'
+             when :dealer_wins
+               'Диллер выиграл!'
+             when :draw
+               'Ничья!'
+             end
+    puts "\nРезультат раунда - #{result}"
   end
-
 
   def self.start_game(user)
     puts "#{user.capitalize} игра началась!"
   end
 
-  def self.end_game (user, balance)
+  def self.end_game(user, balance)
     puts "Игра закончена #{user}, ваш баланс #{balance}!"
   end
 
   def self.greatings(player_balance, dealer_balance)
-    puts '*'*47
-    puts "* Начало новога раунда. Размещение ставки 10$ *"
-    puts '*'*47
+    puts '*' * 47
+    puts '* Начало новога раунда. Размещение ставки 10$ *'
+    puts '*' * 47
     puts "Баланс: Игрок #{player_balance}. Диллер #{dealer_balance}\n"
   end
 end
