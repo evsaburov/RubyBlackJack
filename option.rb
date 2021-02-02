@@ -11,21 +11,31 @@ module Option
     more == 'y'
   end
 
-  def player_respond
-    puts 'Введите y/n, чтобы взять карту, или закончить ход.'
+  def self.player_respond
+    puts 'Введите y/n/q. Взять карту/Пропусть ход/Вскрыть карты.'
     resp = gets.chomp.to_s
-    resp == 'y'
+    # resp == 'y'
+    if resp == 'y'
+      :player_take_card
+    elsif resp == 'n'
+      :player_skip_turn
+    elsif resp == 'q'
+      :show_cards
+    else
+      raise "Не удалость обработать ответ, попробуйте еще раз."
+    end
+  rescue RuntimeError
+    retry
   end
 
-  def result_round(round)
-    puts "Результат игрока:  карты - #{round.player_cards}. Очки #{round.player_score}"
-    puts "Результат диллера: карты - #{round.dealer_cards}. Очки #{round.dealer_cards}"
+  # "%05d" % 
+
+  def self.info_round(round)
+    puts "Результат игрока:  карты - #{round.show_player_cards} Очки #{round.player_score}"
+    puts "Результат диллера: карты - #{round.show_dealer_cards} Очки #{round.dealer_score}"
 
     if round.finished?
     end
 
   end
-
-
-
 end
