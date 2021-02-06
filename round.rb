@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'round'
-require_relative 'card'
+require_relative 'cards'
 
 # Round class
 # rubocop:disable Metrics/ClassLength
@@ -9,7 +9,7 @@ class Round
   attr_reader :result, :player_cards, :dealer_cards, :player_score, :dealer_score
 
   def initialize
-    @cards = Deck.new
+    @cards = Cards.new
     @player_cards = []
     @player_score = 0
     @dealer_cards = []
