@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'option'
-
 # Terminal Interface
 class TerminalInterface
   def initialize(game)
