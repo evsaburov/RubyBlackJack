@@ -4,12 +4,12 @@ require_relative 'option'
 require_relative 'round'
 require 'pry'
 
+#class game
 class Game
   SATRT_BALANCE = 100
   BET = 10
 
   attr_reader :player_name, :player_balance, :round
-  attr_reader :status, :actions
 
   def initialize(player, dealer); end
 
@@ -20,19 +20,17 @@ class Game
   def start
     @player_balance = SATRT_BALANCE
     @dealer_balance = SATRT_BALANCE
-    @player_name = Option.name_is?
   end
 
   def end
     @player_balance = 0
     @dealer_balance = 0
-    @player_name = ''
   end
 
   def place_bet
     @player_balance -= BET
     @dealer_balance -= BET
-    Option.greatings(@player_balance, @dealer_balance)
+    greatings(@player_balance, @dealer_balance)
   end
 
   def update_balance
@@ -81,7 +79,7 @@ class Game
   end
 
   # rubocop:disable Metrics/MethodLength
-  def result_round(round)
+  def result_round_message(round)
     puts "\nРаунд закончен!\n"
     info_round(round)
     result =  case round.result

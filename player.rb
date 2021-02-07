@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-#player class
+# player class
 class Player
-  attr_reader :name
-  attr_accessor :balance, :score, :cards
+  attr_accessor :balance, :score, :cards, :name
 
   def initialize(name)
     @name = name
@@ -11,4 +10,10 @@ class Player
     @score = 0
     @cards = []
   end
+
+  def cards; end
+
+  def score; end
+
+  def take_card; end
 end
