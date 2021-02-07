@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'player'
-require_relative 'cards'
 require_relative 'dealer'
 require_relative 'game'
 require_relative 'term_interface'
