@@ -6,21 +6,25 @@ require_relative 'option'
 class TerminalInterface
   def initialize(game)
     @game = game
+    @player = @game.player
+    @player.name = name_is?
+    @dealer = @game.dealer
     start_game
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def start_game
     @game.start
-    start_game_message(@game.player_name)
+    start_game_message
 
-    while @game.player_balance.positive?
+    while @player.balance.positive?
 
       @game.place_bet
-      round = @game.new_round(@game.player, @game.dealer)
+      greatings
+      round = @game.new_round
 
-      until @round.finished?
-        @game.info_round(round)
+      until round.finished?
+        info_round(round)
         answer = player_respond
         round.player_turn(answer)
       end
@@ -30,16 +34,16 @@ class TerminalInterface
 
       break unless more_game?
     end
-    @game.end_game_message(@game.player_balance, @game.dealer_balance)
+    end_game_message
     @game.end
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   private
 
   def name_is?
     puts 'Введите свое имя:'
-    gets.chomp.to_s
+    gets.chomp.to_s.capitalize
   end
 
   def more_game?
@@ -67,8 +71,8 @@ class TerminalInterface
   # rubocop:enable Metrics/MethodLength
 
   def info_round(round)
-    puts "Результат игрока:  карты - #{round.show_player_cards} Очки #{round.player_score}"
-    puts "Результат диллера: карты - #{round.show_dealer_cards} Очки #{round.dealer_score}" if round.finished?
+    puts "Результат игрока:  карты - #{round.show_player_cards} Очки #{@player.score}"
+    puts "Результат диллера: карты - #{round.show_dealer_cards} Очки #{@dealer.score}" if round.finished?
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -77,28 +81,28 @@ class TerminalInterface
     info_round(round)
     result =  case round.result
               when :player_wins
-                'Игрок выииграл!'
+                "#{@player.name} выииграл!"
               when :dealer_wins
-                'Диллер выиграл!'
+                "#{@dealer.name} выииграл!"
               when :draw
                 'Ничья!'
               end
-    puts "\nРезультат раунда - #{result}"
+    puts "\nРезультат раунда - #{result}.\#{@player.name} #{@player.balance}$. #{@dealer.name} #{@dealer.balance}$\n"
   end
   # rubocop:enable Metrics/MethodLength
 
-  def start_game_message(user)
-    puts "#{user.capitalize} игра началась!"
+  def start_game_message
+    puts "#{@player.name} игра началась!"
   end
 
-  def end_game_message(user, balance)
-    puts "Игра закончена #{user}, ваш баланс #{balance}!"
+  def end_game_message
+    puts "Игра закончена #{@player.name}, ваш баланс #{@player.balance}!"
   end
 
-  def greatings(player_balance, dealer_balance)
+  def greatings
     puts '*' * 47
     puts '* Начало новога раунда. Размещение ставки 10$ *'
     puts '*' * 47
-    puts "Баланс: Игрок #{player_balance}. Диллер #{dealer_balance}\n"
+    puts "Баланс: #{@player.name} #{@player.balance}$. #{@dealer.name} #{@dealer.balance}$\n"
   end
 end

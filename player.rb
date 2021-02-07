@@ -4,16 +4,10 @@
 class Player
   attr_accessor :balance, :score, :cards, :name
 
-  def initialize(name)
+  def initialize(name = nil)
     @name = name
     @balance = 0
     @score = 0
     @cards = []
   end
-
-  def cards; end
-
-  def score; end
-
-  def take_card; end
 end

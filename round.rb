@@ -1,60 +1,62 @@
 # frozen_string_literal: true
 
-require_relative 'round'
 require_relative 'cards'
 
 # Round class
 # rubocop:disable Metrics/ClassLength
 class Round
-  attr_reader :result, :player_cards, :dealer_cards, :player_score, :dealer_score
+  attr_accessor :player, :dealer, :finished, :result
 
-  def initialize
-    @cards = Cards.new
-    @player_cards = []
-    @player_score = 0
-    @dealer_cards = []
-    @dealer_score = 0
+  def initialize(player, dealer, cards)
+    @cards = cards
+    @player = player
+    @dealer = dealer
+    @player.cards = []
+    @dealer.cards = []
+    @player.score = 0
+    @dealer.score = 0
     @finished = false
+    @result = false
     start_turn
   end
 
   def start_turn
     2.times do
-      @player_cards << @cards.one_card
-      @dealer_cards << @cards.one_card
+      @player.cards << @cards.one_card
+      @dealer.cards << @cards.one_card
     end
     calculate_player_result
     calculate_dealer_result
   end
 
   def calculate_player_result
-    @player_score = 0
-    @player_cards.each do |card|
+    @player.score = 0
+    @player.cards.each do |card|
       if card.rank == 'A'
         summ = 0
-        @player_cards.each { |c| summ += c.cost }
+        @player.cards.each { |c| summ += c.cost }
         card.cost = (summ >= 21 ? 1 : 11)
       end
-      @player_score += card.cost
+      @player.score += card.cost
     end
   end
 
   def calculate_dealer_result
-    @dealer_score = 0
-    @dealer_cards.each do |card|
+    @dealer.score = 0
+    @dealer.cards.each do |card|
       if card.rank == 'A'
         summ = 0
-        @dealer_cards.each { |c| summ += c.cost }
+        @dealer.cards.each { |c| summ += c.cost }
         card.cost = (summ >= 21 ? 1 : 11)
       end
-      @dealer_score += card.cost
+      @dealer.score += card.cost
     end
   end
 
   def player_take_card
-    return if @player_cards.length == 3
+    return if @player.cards.length == 3
 
-    @player_cards << @cards.one_card
+    @player.cards << @cards.one_card
     calculate_player_result
     check_after_player_turn
   end
@@ -74,8 +76,7 @@ class Round
   end
 
   def check_after_player_turn
-    if @player_score > 21
-      puts 'Больше 21, противник выиграл'
+    if @player.score > 21
       @result = :dealer_wins
       @finished = true
     end
@@ -85,8 +86,8 @@ class Round
   def dealer_turn
     return if finished?
 
-    if @dealer_score <= 17
-      @dealer_cards << @cards.one_card
+    if @dealer.score <= 17
+      @dealer.cards << @cards.one_card
       calculate_dealer_result
     end
     check_after_dealer_turn
@@ -94,12 +95,11 @@ class Round
   end
 
   def show_after_3_cards
-    show_cards if @player_cards.length == 3 && @dealer_cards.length == 3
+    show_cards if @player.cards.length == 3 && @dealer.cards.length == 3
   end
 
   def check_after_dealer_turn
-    if @dealer_score > 21
-      puts 'Больше 21, противник выиграл'
+    if @dealer.score > 21
       @result = :player_wins
       @finished = true
     end
@@ -107,7 +107,7 @@ class Round
   end
 
   def calculate_result_round
-    delta = @player_score - @dealer_score
+    delta = @player.score - @dealer.score
     if delta.positive?
       @result = :player_wins
     elsif delta.negative?
@@ -128,13 +128,13 @@ class Round
 
   def show_player_cards
     result = ''
-    @player_cards.each { |card| result += "#{card.suit}#{card.rank}(cast=#{card.cost}) " }
+    @player.cards.each { |card| result += "#{card.suit}#{card.rank}(cast=#{card.cost}) " }
     result.to_s
   end
 
   def show_dealer_cards
     result = ''
-    @dealer_cards.each { |card| result += "#{card.suit}#{card.rank}(cast=#{card.cost}) " }
+    @dealer.cards.each { |card| result += "#{card.suit}#{card.rank}(cast=#{card.cost}) " }
     result.to_s
   end
 end

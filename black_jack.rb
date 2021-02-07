@@ -9,10 +9,13 @@ require_relative 'term_interface'
 # main
 class BlackJack
   def initialize
-    player = Player.new('Sergey')
-    dealer = Dealer.new
+    player = Player.new
+    dealer = Dealer.new('Диллер')
     game = Game.new(player, dealer)
 
     TerminalInterface.new(game)
   end
 end
+
+# start game BlackJack
+BlackJack.new

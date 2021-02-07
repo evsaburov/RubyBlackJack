@@ -17,7 +17,6 @@ class Game
     # @player_name = Option.name_is?
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   # def start_game
   #   Option.start_game(@player_name)
   #   while player_balance.positive?
@@ -35,8 +34,6 @@ class Game
   #   end
   #   Option.end_game(@player_name, @player_balance)
   # end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
-
   private
 
   def start
