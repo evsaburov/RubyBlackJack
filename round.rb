@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'cards'
-
 # Round class
-# rubocop:disable Metrics/ClassLength
 class Round
   attr_accessor :player, :dealer, :finished, :result
 
-  def initialize(player, dealer, cards)
-    @cards = cards
+  def initialize(player, dealer, deck)
+    @deck = deck
     @player = player
     @dealer = dealer
     @player.cards = []
@@ -22,42 +19,18 @@ class Round
 
   def start_turn
     2.times do
-      @player.cards << @cards.one_card
-      @dealer.cards << @cards.one_card
+      @player.cards << @deck.one_card
+      @dealer.cards << @deck.one_card
     end
-    calculate_player_result
-    calculate_dealer_result
-  end
-
-  def calculate_player_result
-    @player.score = 0
-    @player.cards.each do |card|
-      if card.rank == 'A'
-        summ = 0
-        @player.cards.each { |c| summ += c.cost }
-        card.cost = (summ >= 21 ? 1 : 11)
-      end
-      @player.score += card.cost
-    end
-  end
-
-  def calculate_dealer_result
-    @dealer.score = 0
-    @dealer.cards.each do |card|
-      if card.rank == 'A'
-        summ = 0
-        @dealer.cards.each { |c| summ += c.cost }
-        card.cost = (summ >= 21 ? 1 : 11)
-      end
-      @dealer.score += card.cost
-    end
+    @player.calculate_result
+    @dealer.calculate_result
   end
 
   def player_take_card
     return if @player.cards.length == 3
 
-    @player.cards << @cards.one_card
-    calculate_player_result
+    @player.cards << @deck.one_card
+    @player.calculate_result
     check_after_player_turn
   end
 
@@ -87,8 +60,8 @@ class Round
     return if finished?
 
     if @dealer.score <= 17
-      @dealer.cards << @cards.one_card
-      calculate_dealer_result
+      @dealer.cards << @deck.one_card
+      @dealer.calculate_result
     end
     check_after_dealer_turn
     show_after_3_cards
@@ -125,17 +98,4 @@ class Round
   def finished?
     @finished
   end
-
-  def show_player_cards
-    result = ''
-    @player.cards.each { |card| result += "#{card.suit}#{card.rank}(cast=#{card.cost}) " }
-    result.to_s
-  end
-
-  def show_dealer_cards
-    result = ''
-    @dealer.cards.each { |card| result += "#{card.suit}#{card.rank}(cast=#{card.cost}) " }
-    result.to_s
-  end
 end
-# rubocop:enable Metrics/ClassLength

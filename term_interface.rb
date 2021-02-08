@@ -69,8 +69,8 @@ class TerminalInterface
   # rubocop:enable Metrics/MethodLength
 
   def info_round(round)
-    puts "Результат игрока:  карты - #{round.show_player_cards} Очки #{@player.score}"
-    puts "Результат диллера: карты - #{round.show_dealer_cards} Очки #{@dealer.score}" if round.finished?
+    puts "Результат игрока:  карты - #{@player.show_cards} Очки #{@player.score}"
+    puts "Результат диллера: карты - #{@dealer.show_cards} Очки #{@dealer.score}" if round.finished?
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -85,7 +85,7 @@ class TerminalInterface
               when :draw
                 'Ничья!'
               end
-    puts "\nРезультат раунда - #{result}.\#{@player.name} #{@player.balance}$. #{@dealer.name} #{@dealer.balance}$\n"
+    puts "\nРезультат раунда - #{result}.\n#{@player.name} #{@player.balance}$. #{@dealer.name} #{@dealer.balance}$\n"
   end
   # rubocop:enable Metrics/MethodLength
 

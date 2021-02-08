@@ -3,11 +3,12 @@
 require_relative('card')
 
 # class Cards
-class Cards
+class Deck
   def initialize
     @cards = []
-    suits = ["\u2660", "\u2666", "\u2665", "\u2663"]
-    ranks = %w[A 2 3 4 5 6 7 8 9 10 J Q K]
+
+    suits = Card.suits
+    ranks = Card.ranks
 
     suits.each do |suit|
       ranks.each do |rank|

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'round'
+require_relative 'deck'
 
 # class game
 class Game
@@ -8,16 +9,16 @@ class Game
   BET = 10
 
   attr_reader :round
-  attr_accessor :player, :dealer, :cards
+  attr_accessor :player, :dealer, :deck
 
   def initialize(player, dealer)
     @player = player
     @dealer = dealer
-    @cards = Cards.new
+    @deck = Deck.new
   end
 
   def new_round
-    @round = Round.new(player, dealer, cards)
+    @round = Round.new(player, dealer, deck)
   end
 
   def start
