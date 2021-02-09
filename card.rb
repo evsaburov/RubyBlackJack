@@ -14,14 +14,6 @@ class Card
     @cost = cost_is(rank)
   end
 
-  def self.suits
-    SUITS
-  end
-
-  def self.ranks
-    RANKS
-  end
-
   def picture?
     %(J Q K).include? rank
   end

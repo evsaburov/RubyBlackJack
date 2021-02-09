@@ -7,8 +7,8 @@ class Deck
   def initialize
     @cards = []
 
-    suits = Card.suits
-    ranks = Card.ranks
+    suits = Card::SUITS
+    ranks = Card::RANKS
 
     suits.each do |suit|
       ranks.each do |rank|
